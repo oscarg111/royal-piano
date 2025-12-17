@@ -1,4 +1,8 @@
+import { useForm, ValidationError } from "@formspree/react";
+
 export default function Contact() {
+  const [state, handleSubmit] = useForm("xovggzod");
+
   return (
     <div className="row">
       <div className="col-md-6">
@@ -14,25 +18,62 @@ export default function Contact() {
 
       <div className="col-md-6">
         <h3>Send a Message</h3>
-        <form
-          action="mailto:cary@royalpiano.com"
-          method="POST"
-          encType="text/plain"
-        >
-          <div className="mb-3">
-            <label className="form-label">Name</label>
-            <input className="form-control" />
+
+        {/* ✅ Success State */}
+        {state.succeeded ? (
+          <div className="alert alert-success">
+            <h5>Thank you!</h5>
+            <p>Your message has been sent successfully.</p>
           </div>
-          <div className="mb-3">
-            <label className="form-label">Email</label>
-            <input type="email" className="form-control" />
-          </div>
-          <div className="mb-3">
-            <label className="form-label">Message</label>
-            <textarea className="form-control" rows="4"></textarea>
-          </div>
-          <button className="btn btn-primary">Send</button>
-        </form>
+        ) : (
+          /* ✅ Form */
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label className="form-label">Name</label>
+              <input name="name" className="form-control" required />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Email</label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                className="form-control"
+                required
+              />
+              <ValidationError
+                prefix="Email"
+                field="email"
+                errors={state.errors}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                className="form-control"
+                rows="4"
+                required
+              />
+              <ValidationError
+                prefix="Message"
+                field="message"
+                errors={state.errors}
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={state.submitting}
+            >
+              Send
+            </button>
+          </form>
+        )}
       </div>
     </div>
   );
