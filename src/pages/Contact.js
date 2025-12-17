@@ -14,7 +14,11 @@ export default function Contact() {
 
       <div className="col-md-6">
         <h3>Send a Message</h3>
-        <form>
+        <form
+          action="mailto:cary@royalpiano.com"
+          method="POST"
+          encType="text/plain"
+        >
           <div className="mb-3">
             <label className="form-label">Name</label>
             <input className="form-control" />
